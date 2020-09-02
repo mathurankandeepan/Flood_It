@@ -1,0 +1,13 @@
+plot "exo1_X_10_50.txt" using 1:5 with lines  linecolor rgb "red"
+replot "exo2_X_10_50.txt" using 1:5 with lines linecolor rgb "blue"
+replot "exo3_X_10_50_v2.txt" using 1:5 with lines linecolor rgb "green"
+set term postscript eps enhanced color
+set output "Figure 5.1"
+set size 1, 1
+set term png
+set key right bottom
+set xlabel "Dim"
+set ylabel "Nombre d'essais"
+set xrange [0:300]
+set title "Figure 5.1 : Graphe pour Dim = X ; Nbcl = 10 ; Nivdif = 50"
+replot

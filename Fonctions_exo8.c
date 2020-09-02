@@ -26,60 +26,32 @@ void init_Zsg2_graphe(Zsg2_graphe *Z , int dim , int nbcl , int tailleCligne){
     
 } 
 
-void plus_court_chemin2( Graphe_zone *graphe , Sommet *depart, Sommet *arrive, Cellule_som **res ){
-    Cellule_som *cour = NULL;
-    Sommet *u, *v;
-    File *file = malloc( sizeof( File ) );
-    
-    reset_distance_sommet(graphe);
-    init_File (file);
-    ajoute_queue_File (file, depart);
-    depart->distance = 0;
-    while ( file->first != NULL){
-        enleve_tete_File (file, &u);
-        
-        cour = u->sommet_adj;
-
-        while ( cour != NULL){
-            v = cour->sommet;
-            if ( v->distance == INF){
-                v->distance = u->distance + 1;
-                v->pere = u;
-                ajoute_queue_File(file, v);
-            }
-            if ( v == arrive){
-                while ( v != depart){
-                    ajoute_liste_sommet ( v , res);
-                    v = v->pere;
-                    v->marque = 4; 
-                }
-                detruit_File (file);
-                free(file);
-                return ;
-            }
-            cour = cour->suiv;
-        }
-    } 
-}
-
-
 void init_Contour (Zsg2_graphe *Z, int tailleCtotal, int dim_moit ){
-    int last = Z->dim -1; 
+    int last = Z->dim -1, i = 0; 
     Graphe_zone *graphe = Z->graphe;
     Sommet ***mat = graphe->mat ;
     Bordure_Zsg *contour = Z->Contour;
     Sommet *milieu= mat[dim_moit][dim_moit];
+    Cellule_som *list,*cell;
 
-    plus_court_chemin(graphe, milieu, mat[last][last],( &(contour+0)->som));
-    plus_court_chemin(graphe, milieu, mat[0][last],( &(contour+1)->som));
-    plus_court_chemin(graphe, milieu, mat[last][0],( &(contour+2)->som));
-    plus_court_chemin(graphe, milieu, mat[dim_moit][last],( &(contour+3)->som));
-    plus_court_chemin(graphe, milieu, mat[last][dim_moit],( &(contour+4)->som));
-    plus_court_chemin(graphe, milieu, mat[dim_moit][0],( &(contour+5)->som));
-    plus_court_chemin(graphe, milieu, mat[0][dim_moit],( &(contour+6)->som));
+    init_Cellule_som(&list);
+    
+    points_strategiques(Z->graphe, &list, dim_moit, last );
+    cell = list;
+    
+    BFS_graphe_complet(Z->graphe, milieu); /*BFS d'origine sommet_millieu sur tout le graphe */
 
+    /* Attribution à chaque case stratégique du contour le plus petit chemin entre millieu et la case*/
+    while (cell != NULL) {
+        plus_court_chemin_sommet(milieu, cell->sommet, &(contour+i)->som) ;
+        i++;
+        cell = cell->suiv;
+    }   
+    
+    detruit_liste_sommet(&list);
 }
 
+/* Pas encore fonctionnelle mais peut-être pour la soutenance */
 void init_Contour2 (Zsg2_graphe *Z,int tailleCligne, int tailleCtotal, int dim_moit, int dim ){
     int i , last = Z->dim -1, pas, tmp1 , tmp2, tmp3; 
     Graphe_zone *graphe = Z->graphe;
@@ -120,7 +92,7 @@ void init_tab (int *tab, int nbcl){
     }
 }
 
-void mis_a_jour_Contour (Zsg2_graphe *Z ,int tailleCtotale){
+void mis_a_jour_Contour_tab (Zsg2_graphe *Z ,int tailleCtotale){
     int i , cl;
     Bordure_Zsg *contour =  Z->Contour;
     int *tab = Z->tab;
@@ -135,7 +107,7 @@ void mis_a_jour_Contour (Zsg2_graphe *Z ,int tailleCtotale){
 }
 
 int max_tab_contour( int *tab, int nbcl ){
-    int i, max = 0, cl = -1;
+    int i, max = 0, cl = 0;
 
     for ( i = 0 ; i < nbcl ; i++){
         if ( tab[i]> max ){
@@ -147,7 +119,7 @@ int max_tab_contour( int *tab, int nbcl ){
 }
 
 void Creation_File_Contour (Zsg2_graphe *Z ,int tailleCtotale , File **File){
-    int i;
+    int i, cl, nbcl = Z->nbcl;
     Sommet *sommet;
     Bordure_Zsg *contour =  Z->Contour;
 
@@ -155,38 +127,25 @@ void Creation_File_Contour (Zsg2_graphe *Z ,int tailleCtotale , File **File){
         (contour+i)->len = 1;
     }
 
-    while ( ! bordure_vide(contour , tailleCtotale )){
+    while ( ! bordure_vide(contour , tailleCtotale )){ /* Si le Contour n'est pas vide*/
+        init_tab(Z->tab,nbcl);  /* On remet le tab à 0*/
+        mis_a_jour_Contour_tab(Z , tailleCtotale); /* On cree un tableau qui récupere le nombre d'occurence de chaque couleur*/
+        cl = max_tab_contour (Z->tab , nbcl ) ; /* On prend le max de ce tableau*/
+        
         for ( i = 0 ; i < tailleCtotale ; i++){
             if ( (contour+i)->som != NULL  ){
-                enleve_tete_Bordure_Zsg (contour , i , &sommet);
-                ajoute_queue_File(*File, sommet);
+                if ( (contour+i)->som->sommet->cl == cl ){ /* Si le sommet est de la même couleur que le max, alors on l'enlève*/ 
+                    enleve_tete_Bordure_Zsg (contour , i , &sommet);      
+                    ajoute_queue_File(*File, sommet);   /*On ajoute ce sommet à la FILE*/
+                }
             }
             else {
                 (contour+i)->len = 0;
             }
         }
+
     }
 }
-
-// void Creation_File_Contour (Zsg2_graphe *Z ,int tailleCtotale , File **File){
-//     int i, cl, nbcl = Z->nbcl;
-//     Sommet *sommet;
-//     Bordure_Zsg *contour =  Z->Contour;
-
-//     for ( i = 0 ; i < tailleCtotale ; i++){
-//         (contour+i)->len = 1;
-//     }
-
-//     while ( ! bordure_vide(contour , tailleCtotale )){
-//         cl = max_tab_contour (Z->tab , nbcl ) ;
-//         enleve_tete_Bordure_Zsg (contour , i , &sommet);
-//         ajoute_queue_File(*File, sommet);
-//             }
-//             else {
-//                 (contour+i)->len = 0;
-//             }
-//     }
-// }
 
 
 void detruit_Zsg2_graphe(Zsg2_graphe *Z , int dim, int nbcl, int tailleCtotal ){
@@ -254,39 +213,44 @@ void Affichage_Grille_Graphe2( Zsg2_graphe *Z, Grille *G, int dim, int cl){
 
 int BFS_Contour ( int **M , Grille *G , int dim , int nbcl ,int tailleCligne , int aff){
     int cl , cpt = 0, dim_moit , tailleCtotal; 
-    Sommet *s = NULL;
-    Cellule_som *chemin,  *cell;
+    Sommet *sommet_depart, *sommet_milieu, *s = NULL;
+    Cellule_som *chemin,  *cell, *tmp;
     File *file = malloc( sizeof( File ) );
     Zsg2_graphe *Z = (Zsg2_graphe *) malloc (sizeof (Zsg2_graphe));
 
+    /* Initialisation */ 
     dim_moit = floor (dim /2);
-
     tailleCtotal = tailleCligne *4 ;
+
     init_Zsg2_graphe( Z , dim , nbcl, tailleCligne);
     cree_graphe_zone(Z->graphe, M,dim );
     init_Cellule_som(&chemin);
+    init_Cellule_som(&tmp);
     init_Contour(Z, tailleCtotal, dim_moit);
-    //init_Contour2(Z, tailleCligne, tailleCtotal, dim_moit, dim);
     init_File(file);
+    sommet_milieu = (Z->graphe->mat)[dim_moit][dim_moit];
+    sommet_depart = (Z->graphe->mat)[0][0] ; 
+
     
-    s = (Z->graphe->mat)[0][0] ;
-    cl = s->cl;
-    ajoute_liste_sommet(s , &((Z->B+cl)->som));
+    /* Ajout de la première case de la zone dans la bordure puis on applique agrandir_zone*/
+    cl = sommet_depart->cl;
+    ajoute_liste_sommet(sommet_depart , &((Z->B+cl)->som));
     ((Z->B+cl)->len)++;
     agrandit_Zsg2_graphe(Z, cl);
 
     
 
     /* Atteindre le milileu le plus vite possible*/
-    plus_court_chemin(Z->graphe , (Z->graphe->mat)[0][0], (Z->graphe->mat)[dim_moit][dim_moit], &chemin);
+    plus_court_chemin_sommet(sommet_milieu , sommet_depart, &tmp ); /* On recupere le plus petit chemin du milieu vers [0][0]*/ 
+    ajoute_liste_sommet(sommet_milieu, &tmp); /* On rajoute la case du milieu parce que par défault , la fonction de deçu ne le fait pas*/
+    inverser(tmp,&chemin); /* on inverser le chemin*/
     
     cell = chemin;
     while( cell != NULL ){
   
         cl= cell->sommet->cl;
-        ajoute_liste_sommet(s , &((Z->B+cl)->som));
 
-        agrandit_Zsg2_graphe(Z, cl);
+        agrandit_Zsg2_graphe(Z, cl);   /*Agrandit la zone */
 
         cell = cell->suiv;
         cpt++;
@@ -297,13 +261,13 @@ int BFS_Contour ( int **M , Grille *G , int dim , int nbcl ,int tailleCligne , i
     }
 
 
-    /* Parcours de la File qui amene en meme temps a differents sommets*/
+    /* Parcours de la File qui atteint tout le contour le plus rapidement possible grâce à max_tab_contour*/
     Creation_File_Contour(Z, tailleCtotal , &file);
     
     while( file->first != NULL ){
         enleve_tete_File(file , &s);
             
-        if (s->marque == 0  ){
+        if (s->marque == 0  ){ /* Si le sommet fait déjà parti de la zone, on passe au suiv*/
             continue;
         }
         cl = s->cl;
@@ -315,7 +279,7 @@ int BFS_Contour ( int **M , Grille *G , int dim , int nbcl ,int tailleCligne , i
         }
     }
 
-    /* Bordure max pour la fin*/
+    /* Bordure max pour la fin de l'exercice 5*/
     while( ! bordure_vide(Z->B, nbcl)  ){
         
         cl = bordure_max1(Z->B, nbcl);
@@ -328,7 +292,7 @@ int BFS_Contour ( int **M , Grille *G , int dim , int nbcl ,int tailleCligne , i
     }
     
 
-
+    /* Destruction de toute la mémoire allouée*/
     detruit_liste_sommet(&chemin);
     free (file);
     detruit_Zsg2_graphe(Z , dim , nbcl , tailleCtotal);

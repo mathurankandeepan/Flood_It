@@ -1,0 +1,13 @@
+plot "exo5_10_X_0.txt" using 2:5 with lines   linecolor rgb "red"
+replot "exo6_10_X_0.txt" using 2:5 with lines linecolor rgb "blue"
+replot "exo7_10_X_0.txt" using 2:5 with lines linecolor rgb "violet"
+replot "exo8_10_X_0.txt" using 2:5 with lines linecolor rgb "green"
+set term postscript eps enhanced color
+set output "Figure 11.1"
+set size 1, 1
+set term png
+set key right bottom
+set xlabel "Nbcl"
+set ylabel "Nombre d'essais"
+set title "Figure 11.1 : Graphe pour Dim = 10 ; Nbcl = X ; Nivdif = 0"
+replot

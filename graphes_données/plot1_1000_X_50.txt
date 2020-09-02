@@ -1,0 +1,13 @@
+plot "exo1_1000_X_50.txt" using 2:5 with lines linecolor rgb "red"
+replot "exo2_1000_X_50.txt" using 2:5 with lines linecolor rgb "blue"
+replot "exo3_320_X_50.txt" using 2:5 with lines linecolor rgb "green"
+set term postscript eps enhanced color
+set output "Figure 8.1"
+set size 1, 1
+set term png
+set key center top
+set xlabel "Nbcl"
+set ylabel "Nombre d'essais"
+set xrange [0:100]
+set title "Figure 8.1 : Graphe pour Dim = 320 ; Nbcl = X ; Nivdif = 50"
+replot

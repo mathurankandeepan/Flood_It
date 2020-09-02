@@ -7,7 +7,7 @@
 
 /* Affiche la moyenne d'essais et de temps de la fonction de l'exercice exo sur un nombre de nbtest*/
 /* If ecrire = 1 then dim nbcl nivdif temps_cpu essais sont récupere dans fichiers*/
-void Graphe_exo_moyenne (int dim, int nbcl, int nivdif,int aff, int exo, int nbtest, char *fichier, int ecrire );
+void Graphe_exo_moyenne (int dim, int nbcl, int nivdif, int exo, int nbtest, char *fichier, int ecrire );
 
 /* Appelle la fonction Graphe_exo_moyenne avec dim variant de dim_min à dim_max*/
 void Graphe_dim ( int dim_min, int dim_max, int dim_pas, int nbcl, int nvdif, int exo, int nbtest, char *fichier, int ecrire );

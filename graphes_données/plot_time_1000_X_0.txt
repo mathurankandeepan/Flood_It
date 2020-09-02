@@ -1,0 +1,14 @@
+#plot "exo3_1000_X_0.txt" using 2:4 with lines
+plot "exo5_1000_X_0.txt" using 2:4 with lines   linecolor rgb "red"
+replot "exo6_1000_X_0.txt" using 2:4 with lines linecolor rgb "blue"
+replot "exo7_1000_X_0.txt" using 2:4 with lines linecolor rgb "violet"
+replot "exo8_1000_X_0.txt" using 2:4 with lines linecolor rgb "green"
+set term postscript eps enhanced color
+set output "Figure 12.2 "
+set size 1, 1
+set term png
+set key left top
+set xlabel "Nbcl"
+set ylabel "Temps"
+set title "Figure 12.2 : Graphe pour Dim = 1000 ; Nbcl = X ; Nivdif = 0"
+replot

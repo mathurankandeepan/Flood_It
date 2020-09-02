@@ -74,6 +74,8 @@ void affichage_graphe_zone(Graphe_zone *graphe);
 /* Affiche la zone de la grille*/
 void affichage_Cellule_som (Cellule_som *list);
 
+/* Affiche la grille sous forme de matrice */
+void affichage_matrice ( Graphe_zone *graphe, int dim );
 
 
 

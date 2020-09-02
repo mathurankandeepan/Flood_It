@@ -1,0 +1,52 @@
+#Les commandes à taper dans le terminal pour refaire les graphes
+
+Parite 1:
+
+gnuplot plot_time1_X_10_0.txt
+gnuplot plot_time1_X_10_50.txt
+gnuplot plot_time1_X_100_0.txt
+gnuplot plot_time1_X_100_50.txt
+gnuplot plot1_X_10_0.txt
+gnuplot plot1_X_10_50.txt
+gnuplot plot1_X_100_0.txt
+gnuplot plot1_X_100_50.txt
+gnuplot plot1_10_X_0.txt
+gnuplot plot1_10_X_50.txt
+gnuplot plot1_1000_X_0.txt
+gnuplot plot1_1000_X_50.txt
+gnuplot plot_time1_10_X_0.txt
+gnuplot plot_time1_10_X_50.txt
+gnuplot plot_time1_1000_X_0.txt
+gnuplot plot_time1_1000_X_50.txt
+
+
+Partie 2 :
+
+gnuplot plot_10_X_0.txt
+gnuplot plot_10_X_50.txt
+gnuplot plot_1000_X_0.txt
+gnuplot plot_1000_X_50.txt
+gnuplot plot_time_10_X_0.txt
+gnuplot plot_time_10_X_50.txt
+gnuplot plot_time_1000_X_0.txt
+gnuplot plot_time_1000_X_50.txt
+gnuplot plot_time_X_10_0.txt
+gnuplot plot_time_X_10_50.txt
+gnuplot plot_time_X_100_0.txt
+gnuplot plot_time_X_100_50.txt
+gnuplot plot_X_10_0.txt
+gnuplot plot_X_10_50.txt
+gnuplot plot_X_100_0.txt
+gnuplot plot_X_100_50.txt
+
+
+Partie 3 :
+
+gnuplot plot_3-7_10_X_0.txt
+gnuplot plot_3-7_1000_X_0.txt
+gnuplot plot_3-7_time_10_X_0.txt
+gnuplot plot_3-7_time_1000_X_0
+gnuplot plot_3-7_time_X_10_0.txt
+gnuplot plot_3-7_time_X_100_0.txt
+gnuplot plot_3-7_X_10_0.txt
+gnuplot plot_3-7_X_100_0.txt

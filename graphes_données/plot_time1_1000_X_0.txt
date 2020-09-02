@@ -1,0 +1,13 @@
+plot "exo1_1000_X_0.txt" using 2:4 with lines
+replot "exo2_1000_X_0.txt" using 2:4 with lines
+replot "exo3_1000_X_0.txt" using 2:4 with lines
+set term postscript eps enhanced color
+set output "Figure 4.2"
+set size 1, 1
+set term png
+set key right center
+set xlabel "Nbcl"
+set ylabel "Temps"
+set xrange [0:100]
+set title "Figure 4.2 : Graphe pour Dim = 320 ; Nbcl = X ; Nivdif = 0"
+replot

@@ -17,7 +17,7 @@ int main(int argc,char**argv){
 
   int dim, nbcl, nivdif, graine, exo, aff;
   Grille *G;
-  int i,j;
+  int i;
   int **M;
 
   clock_t
@@ -51,28 +51,15 @@ int main(int argc,char**argv){
   }
 
   Gene_instance_genere_matrice(dim, nbcl, nivdif, graine, M);
-  //  M[0][0]=1;
-  //  M[1][0]=1;
-  //  M[0][1]=3;
-  //  M[1][1]=4;
-  //  M[2][0]=1;
-  //  M[2][1]=6;
-  //  M[2][2]=7;
-  //  M[0][2]=8;
-  //  M[1][2]=9;
 
-  // Graphe_3D( 1000 , 100 , 1 , "Graphe3D_exo7_nivdif1.txt" , 7  );
-  // Graphe_exo_moyenne (dim, nbcl, nivdif, exo, 20);
-  // Graphe_exo_moyenne (dim, nbcl, nivdif, exo, 20);
 
-  //  Graphe_dim(10, 100 , 10 , nbcl , nivdif, exo, 20 );
   // Graphe_2D_main(8, 20, "exo8");
   // Graphe_2D_main(7, 20, "exo7");
   // Graphe_2D_main(6, 20, "exo6");
   // Graphe_2D_main(5, 20, "exo5");
-  // Graphe_2D_main(3, 40, "exo3");
+  // Graphe_2D_main(3, 50, "exo3");
   // Graphe_2D_main(2, 10, "exo2");
-  // Graphe_2D_main(1, 20, "exo1");
+  // Graphe_2D_main(1, 10, "exo1");
 
 
 
@@ -83,12 +70,7 @@ int main(int argc,char**argv){
 
     Grille_ouvre_fenetre(G);
 
-    for (i=0;i<dim;i++)
-      for (j=0;j<dim;j++){
-	Grille_attribue_couleur_case(G,i,j,M[i][j]);
-      }
-
-    Grille_redessine_Grille();
+    Affichage_Grille( M ,G , dim);
     Grille_attente_touche();
   }
 
@@ -109,6 +91,7 @@ int main(int argc,char**argv){
     init_Graphe_zone(graphe,dim);
     cree_graphe_zone(graphe, M, dim);
     affichage_graphe_zone(graphe);
+    affichage_matrice(graphe ,dim);
     detruit_Graphe_zone(graphe,dim);
     free(graphe);
   }

@@ -53,16 +53,18 @@ void reset_distance_sommet (Graphe_zone *graphe ){
     }
 }
 
+
 /* Nous nous sommes basés sur la fonction nbarc_depuis_r du cours 7 sur le parcours en largeur */
 void plus_court_chemin( Graphe_zone *graphe , Sommet *depart, Sommet *arrive, Cellule_som **res ){
     Cellule_som *cour = NULL;
     Sommet *u, *v;
     File *file = malloc( sizeof( File ) );
     
-    /* On remet les disctances à INF pour appeler plusieurs fois cette fonction*/
+    /* On remet les disctances à INF si elles ne le sont pas déjà*/
     reset_distance_sommet(graphe);
     init_File (file);
     /* On ajoute la case de départ à la FILE*/
+    depart->distance = 0;
     ajoute_queue_File (file, depart);
     /* Si la File est vide, cela veut dire que la case n'est pas dans la grille*/
     while ( file->first != NULL){

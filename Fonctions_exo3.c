@@ -55,7 +55,7 @@ int appartient_Bordure(S_Zsg *Z, int i, int j, int cl){
 
 
 int agrandit_Zsg (int **M, S_Zsg *Z , int cl, int k, int l){
-    int i, j, cpt, cl2;
+    int i, j, cpt, cl2, i_inf, i_sup, j_inf, j_sup;
     
     cpt=0; /*Compte le nombre de case rajouté à la zone*/
     ListeCase *Pile=(ListeCase *)malloc(sizeof(ListeCase));
@@ -72,21 +72,28 @@ int agrandit_Zsg (int **M, S_Zsg *Z , int cl, int k, int l){
         (Z->App)[i][j]=-1;
         cpt++;
         ajoute_Zsg(Z,i,j); /*Ajoute à la zone*/
+
+
+        i_inf = i-1;
+        i_sup = i+1;
+        j_inf = j-1;
+        j_sup = j+1;
+
         if (0<i){            /*Ne sors pas de la grille par le haut*/ 
 
-            if( ! appartient_Zsg(Z, i-1,j) ){ /*Si la case voisine n'est pas déjà dans la zone*/
-                cl2 = M[i-1][j];              /*cl2 récupère la couleur de la case voisine*/
+            if( ! appartient_Zsg(Z, i_inf,j) ){ /*Si la case voisine n'est pas déjà dans la zone*/
+                cl2 = M[i_inf][j];              /*cl2 récupère la couleur de la case voisine*/
 
                 if (cl==cl2){                       /* Si la case voisine est de la même couleur que la zone */
 
-                    if (! appartient_Bordure(Z,i-1,j,cl) ){ /*Si la case voisine n'appartient pas déjà à la bordure*/
-                        ajoute_en_tete(Pile,i-1,j);             /*Alors rajoute à la Pile pour rajouter à la zone*/
+                    if (! appartient_Bordure(Z,i_inf,j,cl) ){ /*Si la case voisine n'appartient pas déjà à la bordure*/
+                        ajoute_en_tete(Pile,i_inf,j);             /*Alors rajoute à la Pile pour rajouter à la zone*/
                     }
                                                                 /*Sinon la case est déjà dans la bordure donc elle va être parcourue donc rien à faire*/
                 }
                 else{                               /*Sinon pas de la même couleur que la zone*/
-                    if ( !appartient_Bordure(Z,i-1,j,cl) ){ /*Si n'appartient pas à la bordure*/
-                        ajoute_Bordure(Z,i-1,j,cl2);            /*Alors ajouter à la bordure*/
+                    if ( !appartient_Bordure(Z,i_inf,j,cl2) ){ /*Si n'appartient pas à la bordure*/
+                        ajoute_Bordure(Z,i_inf,j,cl2);            /*Alors ajouter à la bordure*/
                     }
                                                                 /*Sinon déjà dans la bordure donc rien à faire*/
                 }  
@@ -95,16 +102,16 @@ int agrandit_Zsg (int **M, S_Zsg *Z , int cl, int k, int l){
 
         if (i<(Z->dim)-1){  /*Ne sors pas de la grille par le bas*/ 
 
-            if( ! appartient_Zsg(Z, i+1,j) ){ // if pas  dans la zone
-                cl2 = M[i+1][j];
+            if( ! appartient_Zsg(Z, i_sup,j) ){ // if pas  dans la zone
+                cl2 = M[i_sup][j];
                 if (cl==cl2){ // meme couleur
-                    if (! appartient_Bordure(Z,i+1,j,cl) ){ //meme couleur mais  ni dans bordure ni dans zone... sinon meme couleur mais appartient déja a la bordure(donc pas besoin de traiter)
-                        ajoute_en_tete(Pile,i+1,j);
+                    if (! appartient_Bordure(Z,i_sup,j,cl) ){ //meme couleur mais  ni dans bordure ni dans zone... sinon meme couleur mais appartient déja a la bordure(donc pas besoin de traiter)
+                        ajoute_en_tete(Pile,i_sup,j);
                     }
                 }
                 else{
-                    if ( !appartient_Bordure(Z,i+1,j,cl) ){ //couleur differente  ni dans bordure ni dans zone...
-                        ajoute_Bordure(Z,i+1,j,cl2);
+                    if ( !appartient_Bordure(Z,i_sup,j,cl2) ){ //couleur differente  ni dans bordure ni dans zone...
+                        ajoute_Bordure(Z,i_sup,j,cl2);
                     }
                 }  
             }
@@ -112,32 +119,32 @@ int agrandit_Zsg (int **M, S_Zsg *Z , int cl, int k, int l){
         
         if (0<j){  /*Ne sors pas de la grille par la gauche*/ 
 
-            if( ! appartient_Zsg(Z, i,j-1) ){ // if pas  dans la zone
-                cl2 = M[i][j-1];
+            if( ! appartient_Zsg(Z, i,j_inf) ){ // if pas  dans la zone
+                cl2 = M[i][j_inf];
                 if (cl==cl2){ // meme couleur
-                    if (! appartient_Bordure(Z,i,j-1,cl) ){ //meme couleur mais  ni dans bordure ni dans zone... sinon meme couleur mais appartient déja a la bordure(donc pas besoin de traiter)
-                        ajoute_en_tete(Pile,i,j-1);
+                    if (! appartient_Bordure(Z,i,j_inf,cl2) ){ //meme couleur mais  ni dans bordure ni dans zone... sinon meme couleur mais appartient déja a la bordure(donc pas besoin de traiter)
+                        ajoute_en_tete(Pile,i,j_inf);
                     }
                 }
                 else{
-                    if ( !appartient_Bordure(Z,i,j-1,cl) ){ //couleur differente  ni dans bordure ni dans zone...
-                        ajoute_Bordure(Z,i,j-1,cl2);
+                    if ( !appartient_Bordure(Z,i,j_inf,cl2) ){ //couleur differente  ni dans bordure ni dans zone...
+                        ajoute_Bordure(Z,i,j_inf,cl2);
                     }
                 }  
             }
         }
 
         if (j<(Z->dim)-1){  /*Ne sors pas de la grille par la droite*/ 
-            if( ! appartient_Zsg(Z, i,j+1) ){ // if pas  dans la zone
-                cl2 = M[i][j+1];
+            if( ! appartient_Zsg(Z, i,j_sup) ){ // if pas  dans la zone
+                cl2 = M[i][j_sup];
                 if (cl==cl2){ // meme couleur
-                    if (! appartient_Bordure(Z,i,j+1,cl) ){ //meme couleur mais  ni dans bordure ni dans zone... sinon meme couleur mais appartient déja a la bordure(donc pas besoin de traiter)
-                        ajoute_en_tete(Pile,i,j+1);
+                    if (! appartient_Bordure(Z,i,j_sup,cl2) ){ //meme couleur mais  ni dans bordure ni dans zone... sinon meme couleur mais appartient déja a la bordure(donc pas besoin de traiter)
+                        ajoute_en_tete(Pile,i,j_sup);
                     }
                 }
                 else{
-                    if ( !appartient_Bordure(Z,i,j+1,cl) ){ //couleur differente  ni dans bordure ni dans zone...
-                        ajoute_Bordure(Z,i,j+1,cl2);
+                    if ( !appartient_Bordure(Z,i,j_sup,cl2) ){ //couleur differente  ni dans bordure ni dans zone...
+                        ajoute_Bordure(Z,i,j_sup,cl2);
                     }
                 }  
             }
@@ -189,7 +196,7 @@ int sequence_aleatoire_rapide(int **M, Grille *G, int dim, int nbcl, int aff){
                         Grille_attribue_couleur_case(G,i,j,M[i][j]);
                 }
             Grille_redessine_Grille();
-            sleep(0.1);
+            sleep(VITESSE);
         }
     }
     free_Zsg(Z,dim,nbcl);    

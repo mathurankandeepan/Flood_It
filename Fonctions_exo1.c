@@ -147,7 +147,7 @@ int sequence_aleatoire_imp(int **M, Grille *G, int dim, int nbcl, int aff){
   int cl,cpt,taille,tmp;
   ListeCase *L= (ListeCase *)malloc(sizeof(ListeCase));
   ListeCase cell;
-  
+
   srand(time(NULL));
   taille = 0;           /*Compteur des cases de la zone*/
   cpt=0;                /*Compteur de tours*/
@@ -172,7 +172,6 @@ int sequence_aleatoire_imp(int **M, Grille *G, int dim, int nbcl, int aff){
     }
     detruit_liste(L);
   }
-  
   free(L);
 
   return cpt-1;

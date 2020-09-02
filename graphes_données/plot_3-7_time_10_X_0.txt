@@ -1,0 +1,12 @@
+plot "exo3_10_X_0.txt" using 2:4 with lines  linecolor rgb "green"
+replot "exo6_10_X_0.txt" using 2:4 with lines linecolor rgb "blue"
+replot "exo7_10_X_0.txt" using 2:4 with lines linecolor rgb "violet"
+set term postscript eps enhanced color
+set output "Figure 19.2"
+set size 1, 1
+set term png
+set key right top
+set xlabel "Nbcl"
+set ylabel "Temps"
+set title "Figure 19.2 : Graphe pour Dim = 10 ; Nbcl = X ; Nivdif = 0"
+replot

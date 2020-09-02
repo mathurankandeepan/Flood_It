@@ -1,0 +1,13 @@
+plot "exo5_X_100_50.txt" using 1:4 with lines  linecolor rgb "red"
+replot "exo6_X_100_50.txt" using 1:4 with lines linecolor rgb "blue"
+replot "exo7_X_100_50.txt" using 1:4 with lines linecolor rgb "violet"
+replot "exo8_X_100_50.txt" using 1:4 with lines linecolor rgb "green"
+set term postscript eps enhanced color
+set output "Figure 14.2"
+set size 1, 1
+set term png
+set key left top
+set xlabel "Dim"
+set ylabel "Temps"
+set title "Figure 14.2 : Graphe pour Dim = X ; Nbcl = 100 ; Nivdif = 50"
+replot

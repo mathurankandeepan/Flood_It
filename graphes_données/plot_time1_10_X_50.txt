@@ -1,0 +1,13 @@
+plot "exo1_10_X_50.txt" using 2:4 with lines linecolor rgb "red"
+replot "exo2_10_X_50.txt" using 2:4 with lines linecolor rgb "blue"
+replot "exo3_10_X_50.txt" using 2:4 with lines linecolor rgb "green"
+set term postscript eps enhanced color
+set output "Figure 7.2"
+set size 1, 1
+set term png
+set key left top
+set xlabel "Nbcl"
+set ylabel "Temps"
+set xrange [0:100]
+set title "Figure 7.2 : Graphe pour Dim = 10 ; Nbcl = X ; Nivdif = 50"
+replot

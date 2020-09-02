@@ -3,7 +3,6 @@
 #include "Fonctions_exo4.h"
 
 #define INF 999999
-#define VITESSE 0.1
 
 
 void init_Sommet(Sommet *sommet, int nbsom, int cl){
@@ -39,7 +38,6 @@ void init_Graphe_zone(Graphe_zone *graphe, int dim){
 
 void detruit_sommet (Sommet *sommet){
     detruit_liste(&(sommet->cases));
-    free(sommet->cases);
     detruit_liste_sommet((&sommet->sommet_adj));
    
 }
@@ -88,7 +86,6 @@ void affichage_zone (Cellule_som *list){
 
 void affichage_sommet ( Sommet *sommet){
     printf("\nSommet numéro : %d\n", sommet->num);
-    printf("\t\tDistance : %d\n",sommet->distance );
     printf("\tListe des cases contenues dans ce sommet : \n");
     affichage_Listecase(&(sommet->cases) );
     printf("\tListe des cases voisines dans ce sommet : \n");
@@ -108,20 +105,16 @@ void affichage_graphe_zone ( Graphe_zone *graphe ){
 
 void affichage_matrice ( Graphe_zone *graphe, int dim ){
     int i,j;
-    char *sep = "----" * (2 * dim - 1) + "\n"; // Séparateur de ligne
-    char *ligne = ""; // Récupère la ligne à afficher
     Sommet ***mat = graphe->mat;
-    Sommet *s;
     printf("\n**************** Affichage du graphe case par case *******************\n");
-    for (i = 0; i<dim; i++){
+    for (i = 0; i < dim; i++){
         for(j = 0; j < dim; j++){
-            s = mat[i][j];
-            ligne += s->num + "\t";
+            printf("%d\t", mat[i][j]->num );
         }
-        printf(ligne + "\n");
-        ligne = "";
-        printf(sep);
+    printf("\n");
     }
+    printf("\n*************************************************************\n");
+    printf("On remarque qu'il y a une inversion entre les i et j lors de l'affichage avec la SDL");
 }
 
 

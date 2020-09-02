@@ -1,6 +1,6 @@
 GCC_FLAGS = -g -Wall
 
-all: Flood-It_Partie1
+all: Flood-It_Partie1 Flood-It
 
 
 
@@ -40,8 +40,14 @@ Fonctions_exo8.o: Fonctions_exo8.c  Entete_Fonctions.h Fonctions_exo8.h Liste_ca
 Flood-It_Partie1.o: Flood-It_Partie1.c
 	gcc $(GCC_FLAGS) -c Flood-It_Partie1.c 
 
+Flood-It.o: Flood-It.c
+	gcc $(GCC_FLAGS) -c Flood-It.c 
+
 Flood-It_Partie1: Flood-It_Partie1.o Liste_case.o  API_Grille.o API_Gene_instance.o Graphe.o Fonctions_exo1.o Fonctions_exo3.o Fonctions_exo4.o Fonctions_exo5.o Fonctions_exo6.o Fonctions_exo7.o Fonctions_exo8.o
 	gcc $(GCC_FLAGS) -o Flood-It_Partie1 Flood-It_Partie1.o Liste_case.o API_Grille.o API_Gene_instance.o Graphe.o Fonctions_exo1.o Fonctions_exo3.o Fonctions_exo4.o Fonctions_exo5.o Fonctions_exo6.o Fonctions_exo7.o Fonctions_exo8.o -lSDL -lm
 	
+Flood-It :Flood-It.o Liste_case.o  API_Grille.o API_Gene_instance.o Graphe.o Fonctions_exo1.o Fonctions_exo3.o Fonctions_exo4.o Fonctions_exo5.o Fonctions_exo6.o Fonctions_exo7.o Fonctions_exo8.o
+	gcc $(GCC_FLAGS) -o Flood-It Flood-It.o Liste_case.o API_Grille.o API_Gene_instance.o Graphe.o Fonctions_exo1.o Fonctions_exo3.o Fonctions_exo4.o Fonctions_exo5.o Fonctions_exo6.o Fonctions_exo7.o Fonctions_exo8.o -lSDL -lm
+
 clean:
 	rm -f *.o Flood-It_Partie1
